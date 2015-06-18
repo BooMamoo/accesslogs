@@ -1,0 +1,13 @@
+@extends('template')
+
+@section('content')
+
+	<button><a href="{{ url('name') }}"> Name </a>
+		
+	</button>
+
+	<button><a href="{{ url('day') }}"> Day </a>
+		
+	</button>
+
+@endsection

@@ -1,0 +1,14 @@
+@extends('template')
+
+@section('content')
+	
+	
+	<div>
+		@foreach($contents as $content)
+
+			<p>  content : {{ $content }} </p>
+
+		@endforeach
+	</div>
+
+@endsection

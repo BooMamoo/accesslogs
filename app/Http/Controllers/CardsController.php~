@@ -1,0 +1,70 @@
+<?php namespace App\Http\Controllers;
+
+use App\Cards;
+use File;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+
+use Illuminate\Http\Request;
+
+class CardsController extends Controller {
+
+	public function index()
+	{
+		//$cards = Cards::all();
+
+		//return view('cards.index', compact('cards'));
+
+
+		$filename = file('/home/vagrant/Code/laravel/resources/files/users.csv');
+
+		for ($i = 1 ; $i < count($filename) ; $i++)
+		{
+			$tmp = explode(",", $filename[$i]);
+
+			$card = new Cards;
+			$card->id = (int)($tmp[0]);
+			$card->name = $tmp[1];
+			$card->save();
+
+		/*	
+			echo $tmp[0] ." : ". $tmp[1];
+			echo "\n";
+*/
+		}
+
+		$cards = Cards::all();
+
+		return view('cards.index', compact('cards'));
+/*
+		foreach ($filename as $tmp)
+		{
+			echo $tmp;
+			echo "\n";
+		}
+*/
+
+		return $filename;
+		
+/*
+		try
+		{
+			$contents = File::get($filename);
+			return $contents;
+	
+		}
+		catch (Illuminate\Filesystem\FileNotFoundException $exception)
+		{
+			die("The file doesn't exist");
+		}
+
+*/
+	
+	}
+
+	public function readFile()
+	{
+		
+	}
+
+}

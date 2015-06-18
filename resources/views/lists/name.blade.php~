@@ -1,0 +1,55 @@
+@extends('template')
+
+@section('content')
+	
+	<div class="show blue-grey lighten-5">
+	
+		<p class="text-form teal-text center"> {{ strtoupper($name) }}'s Logs </p>
+
+		<table class="hoverable">
+
+			@if(!$shows->isEmpty())
+
+				<thead>
+					<tr>
+						<th>Number</th>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Date</th>
+						<th>Time</th> 
+					</tr>    
+				</thead>				
+
+				<tbody>
+					
+					<?php
+						$count = 1;
+					?>
+
+					@foreach($shows as $show)
+				
+						<tr>
+							<td> {{ $count++ }} </td>
+							<td> {{ $show->log->card_id }} </td>
+							<td> {{ $name }} </td>
+							<td> {{ $show->date }} </td>
+							<td> {{ $show->time }} </td>
+						</tr>
+				
+					@endforeach
+
+				</tbody>     
+		</table>
+
+			@else
+
+				<p class="no-info center">No information</p>
+
+			@endif
+	</div>
+
+
+	<a href="{{ url('list') }}" class="waves-effect waves-light btn right"><i class="mdi-file-cloud left"></i> Back </a>
+
+@endsection
+

@@ -1,0 +1,49 @@
+<?php namespace App\Http\Controllers;
+
+use App\Logs;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+
+use Illuminate\Http\Request;
+
+class LogsController extends Controller {
+
+	public function index()
+	{
+		$logs = Logs::all();
+
+		return view('logs.index', compact('logs'));
+
+		
+	}
+
+	public function readFile()
+	{
+		$filename = file('/home/vagrant/Code/laravel/resources/files/accesslog.txt');
+
+		for ($i = 1 ; $i < count($filename) ; $i++)
+		{
+
+			$tmp = explode("\t", $filename[$i]);
+			$temp = explode("\r\n", $tmp[9]);
+
+			if($tmp[2] != '00000000')
+			{
+				$log = new Logs;
+				$log->id = (int)($tmp[2]);
+				$log->access = $temp[0];
+				$log->save();
+				
+				//echo (int)($tmp[2]) . " : " . $temp[0];
+				//echo "\n";
+			}
+
+		}
+
+		
+		$logs = Logs::all();
+
+		return view('logs.index', compact('logs'));
+	}
+
+}
