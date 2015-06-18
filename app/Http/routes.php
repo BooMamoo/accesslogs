@@ -14,38 +14,17 @@
 Route::get('/', 'WelcomeController@index');
 Route::get('home', 'HomeController@index');
 
-//if(Auth::check())
-//{
+if(Auth::check())
+{
 	Route::get('form', 'FormController@index');
 	Route::post('store/card', 'FormController@store_card');
 	Route::post('store/log', 'FormController@store_log');
-//}
+}
 
 Route::get('list', 'ListController@index');
 Route::get('listName', 'ListController@listName');
 Route::get('listDay', 'ListController@listDay');
 Route::get('listCheck', 'ListController@listCheck');
-
-
-/*
-
-Route::get('show', 'ShowController@index');
-//Route::get('name', 'ShowController@name');
-//Route::get('day', 'ShowController@day');
-Route::post('showByName', 'ShowController@show_name');
-//Route::get('test', 'ShowController@test');
-
-
-
-
-
-Route::get('cards', 'CardsController@index');
-Route::post('cards/test', 'CardsController@test');
-Route::get('logs', 'LogsController@index');
-
-Route::get('test', 'TestController@index');
-
-*/
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
