@@ -40,7 +40,7 @@ class ListController extends Controller {
 		}
 */
 		
-		return view('lists.index', compact("cards", "days"));
+		return view('lists.index', compact("cards", "days", "count"));
 	}
 
 	public function listName(Request $request)
@@ -63,8 +63,9 @@ class ListController extends Controller {
 	public function listCheck(Request $request)
 	{
 		$day = $request->input('day');
-		$shows = Logs::where('date', '=', $day)->distinct('card_id')->get();
-		dd($shows);
-		return view('lists.check', compact("shows", "day"));
+		$cards = Cards::all();
+		$shows = Logs::with('card')->where('date', '=', $day)->groupBy('card_id')->get();
+
+		return view('lists.check', compact("shows", "day", "cards"));
 	}
 }
