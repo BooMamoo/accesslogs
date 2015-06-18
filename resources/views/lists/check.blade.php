@@ -4,48 +4,62 @@
 	
 	<div class="show blue-grey lighten-5">
 	
-		<p class="text-form teal-text center"> {{ strtoupper($name) }}'s Logs </p>
+		<p class="text-form teal-text center"> {{ $day }}'s Logs </p>
 
 		<table class="hoverable">
 
-			@if(!$shows->isEmpty())
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Time</th>
+					<th class="center">Check</th> 
+				</tr>    
+			</thead>				
 
-				<thead>
-					<tr>
-						<th>Number</th>
-						<th>ID</th>
-						<th>Name</th>
-						<th>Date</th>
-						<th>Time</th> 
-					</tr>    
-				</thead>				
+			<?php
+				$count = 1;
+			?>
 
-				<tbody>
-					
-					<?php
-						$count = 1;
-					?>
+			<tbody>
 
-					@foreach($shows as $show)
+				@foreach($shows as $show)
+					@while($show->card_id != $count)
 				
 						<tr>
-							<td> {{ $count++ }} </td>
-							<td> {{ $show->card_id }} </td>
-							<td> {{ $name }} </td>
-							<td> {{ $show->date }} </td>
-							<td> {{ $show->time }} </td>
+							<td> {{ $cards[$count - 1]->id }} </td>
+							<td> {{ $cards[$count - 1]->name }} </td>
+							<td> No information </td>
+							<td class="center"><a class="waves-effect waves-light btn red">Absent</a> </td>
 						</tr>
-				
-					@endforeach
 
-				</tbody>     
+						<?php
+							
+							$count++;
+
+						?>
+
+					@endwhile
+
+						<tr>
+							<td> {{ $show->card->id }} </td>
+							<td> {{ $show->card->name }} </td>
+							<td> {{ $show->time }} </td>
+							<td class="center"><a class="waves-effect waves-light btn green">Present</a> </td>
+						</tr>
+
+						<?php
+							$count++;
+						?>
+
+					
+
+				@endforeach
+
+			</tbody>  
+   
 		</table>
 
-			@else
-
-				<p class="no-info center">No information</p>
-
-			@endif
 	</div>
 
 
