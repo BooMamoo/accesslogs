@@ -41,15 +41,13 @@
 			<div id="check" class="col s12">
 				@foreach($days as $day)
 
-					<a href="{{ url('listCheck') }}?day={{ $day->date }}" class="collection-item" id="{{ $day->date }}">{{ $day->date }}<span class="new badge"> {{ $day->card->name }} </span>
+					<a href="{{ url('listCheck') }}?day={{ $day->date }}" class="collection-item" id="{{ $day->date }}">{{ $day->date }}</span>
 					</a>
 
 				@endforeach
 			</div>
 		</ul>
 	</div>
-
-
 
 @endsection
 
