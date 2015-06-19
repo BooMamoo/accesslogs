@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use DB;
+use Carbon;
 use App\Cards;
 use App\Logs;
 use App\Http\Requests;
@@ -13,9 +14,11 @@ class ListController extends Controller {
 	public function index()
 	{
 		$cards = Cards::with("lastLog")->get();
-		$days = Logs::with("card")->where("logs.id", "=", function($query) {
-			$query->select(DB::raw('MAX(tmp.id)'))->from('logs as tmp')->whereRaw('logs.date = tmp.date');
+		$days = Logs::with("card")->where("logs.access", "=", function($query) {
+			$query->select(DB::raw('MAX(tmp.access)'))->from('logs as tmp')->whereRaw('date(logs.access) = date(tmp.access)');
 		})->get();
+
+		$checks = Logs::select(DB::raw('date(access), count(distinct card_id)'))->groupBy('date(access)')->get();
 
 		//$days = Logs::with("card")->selectRaw("*")->whereRaw("logs.id = (SELECT MAX(tmp.id) FROM `logs` as tmp WHERE logs.date = tmp.date)")->get();
 
@@ -39,8 +42,9 @@ class ListController extends Controller {
 			}
 		}
 */
-		
-		return view('lists.index', compact("cards", "days", "count"));
+		//dd($checks);
+		//dd($checks[0]['date(access)']);
+		return view('lists.index', compact("cards", "days", "checks"));
 	}
 
 	public function listName(Request $request)
@@ -55,8 +59,11 @@ class ListController extends Controller {
 	public function listDay(Request $request)
 	{
 		$day = $request->input('day');
-		$shows = Logs::where('date', '=', $day)->get();
-	
+		$start = date("Y-m-d H:i:s", strtotime($day));
+		$stop = date("Y-m-d H:i:s", strtotime($day . " 23:59:59"));
+
+		$shows = Logs::with("card")->whereBetween('access', array($start, $stop))->get();
+		
 		return view('lists.day', compact("shows", "day"));
 	}
 
@@ -64,7 +71,10 @@ class ListController extends Controller {
 	{
 		$day = $request->input('day');
 		$cards = Cards::all();
-		$shows = Logs::with('card')->where('date', '=', $day)->groupBy('card_id')->get();
+		$start = date("Y-m-d H:i:s", strtotime($day));
+		$stop = date("Y-m-d H:i:s", strtotime($day . " 23:59:59"));
+
+		$shows =  Logs::with("card")->whereBetween('access', array($start, $stop))->groupBy('card_id')->get();
 
 		return view('lists.check', compact("shows", "day", "cards"));
 	}

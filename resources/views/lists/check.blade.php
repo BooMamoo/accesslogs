@@ -12,7 +12,7 @@
 				<tr>
 					<th>ID</th>
 					<th>Name</th>
-					<th>Time</th>
+					<th>First Access</th>
 					<th class="center">Check</th> 
 				</tr>    
 			</thead>				
@@ -40,19 +40,23 @@
 						?>
 
 					@endwhile
+						
+						<?php
+
+							$date = new DateTime($show->access);	
+
+						?>
 
 						<tr>
 							<td> {{ $show->card->id }} </td>
 							<td> {{ $show->card->name }} </td>
-							<td> {{ $show->time }} </td>
+							<td> {{ $date->format('H:i:s') }} </td>
 							<td class="center"><a class="waves-effect waves-light btn green">Present</a> </td>
 						</tr>
 
 						<?php
 							$count++;
 						?>
-
-					
 
 				@endforeach
 

@@ -19,8 +19,11 @@
 					<a href="{{ url('listName') }}?id={{ $card->id }}" class="collection-item" id="{{ $card->id }}">{{ $card->name }}
 
 						@if(!empty($card->lastLog))
+							<?php
+								$date = new DateTime($card->lastLog->access);
+							?>
 
-							<span class="new badge"> {{ $card->lastLog->date }} {{ $card->lastLog->time }} </span>
+							<span class="new badge"> {{ $date->format('d-m-Y') }} {{ $date->format('H:i:s') }} </span>
 
 						@endif
 					</a>
@@ -32,16 +35,22 @@
 			<div id="day" class="col s12">
 				@foreach($days as $day)
 
-					<a href="{{ url('listDay') }}?day={{ $day->date }}" class="collection-item" id="{{ $day->date }}">{{ $day->date }}<span class="new badge"> {{ $day->card->name }} </span>
+					<a href="{{ url('listDay') }}?day={{ date('d-m-Y', strtotime($day->access)) }}" class="collection-item" id="{{ date('d-m-Y', strtotime($day->access)) }}">
+						{{ date('d-m-Y', strtotime($day->access)) }}
+
+						<span class="new badge"> {{ $day->card->name }} </span>
 					</a>
 
 				@endforeach
 			</div>
 
 			<div id="check" class="col s12">
-				@foreach($days as $day)
+				@foreach($checks as $check)
 
-					<a href="{{ url('listCheck') }}?day={{ $day->date }}" class="collection-item" id="{{ $day->date }}">{{ $day->date }}</span>
+					<a href="{{ url('listCheck') }}?day={{ date('d-m-Y', strtotime($check['date(access)'])) }}" class="collection-item" id="{{ date('d-m-Y', strtotime($check['date(access)'])) }}">
+						{{ date('d-m-Y', strtotime($check['date(access)'])) }}
+
+						<span class="badge"> {{ $check['count(distinct card_id)'] }} </span>
 					</a>
 
 				@endforeach
@@ -50,4 +59,3 @@
 	</div>
 
 @endsection
-

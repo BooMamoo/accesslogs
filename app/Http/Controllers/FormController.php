@@ -101,10 +101,8 @@ class FormController extends Controller {
 			for($i = 1 ; $i < count($contents) ; $i++)
 			{
 				$tmp = explode("\t", $contents[$i]);
-				$date = date("d-m-Y", strtotime($tmp[9]));
-				$time = date("H:i:s", strtotime($tmp[9]));
 
-				$log = Logs::where('card_id', '=', $tmp[2])->where('date', '=', $date)->where('time', '=', $time)->get();
+				$log = Logs::where('card_id', '=', $tmp[2])->where('access', '=', $tmp[9])->get();
 
 				if($log->isEmpty())
 				{
@@ -112,8 +110,6 @@ class FormController extends Controller {
 					{
 						$log = new Logs;
 						$log->card_id = (int)($tmp[2]);
-						$log->date = $date;
-						$log->time = $time;
 						$log->access = $tmp[9];
 						$log->save();
 					}

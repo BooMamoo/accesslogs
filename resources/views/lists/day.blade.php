@@ -28,12 +28,18 @@
 
 					@foreach($shows as $show)
 				
+						<?php
+
+							$date = new DateTime($show->access);
+
+						?>
+
 						<tr>
 							<td> {{ $count++ }} </td>
 							<td> {{ $show->card_id }} </td>
 							<td> {{ $show->card->name }} </td>
-							<td> {{ $show->date }} </td>
-							<td> {{ $show->time }} </td>
+							<td> {{ $date->format('d-m-Y') }} </td>
+							<td> {{ $date->format('H:i:s') }} </td>
 						</tr>
 				
 					@endforeach
