@@ -77,7 +77,7 @@
 				}
 				else
 				{
-					Materialize.toast("Error", 2000)
+					Materialize.toast(data[0], 2000)
 				}
 				
 				$("input").val("")	
@@ -104,7 +104,7 @@
 				}
 				else
 				{
-					Materialize.toast("Error", 2000)
+					Materialize.toast(data[0], 2000)
 				}
 				
 				$("input").val("")	

@@ -3,6 +3,7 @@
 use App\Cards;
 use App\Logs;
 use File;
+use Validator;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -17,6 +18,16 @@ class FormController extends Controller {
 
 	public function store_card(Request $request)
 	{
+		$valid = Validator::make($request->all(), [
+			'cardFile' => 'required|mimes:csv,txt'
+		]);
+
+		if ($valid->fails())
+		{
+			$error = $valid->errors()->all();
+			return $error;
+		}
+
 		if($request->hasFile('cardFile'))
 		{
 			$files = $request->file('cardFile');
@@ -67,11 +78,21 @@ class FormController extends Controller {
 			return "true";
 		}
 	
-		return "false";
+		return "Error";
 	}
 
 	public function store_log(Request $request)
 	{
+		$valid = Validator::make($request->all(), [
+			'logFile' => 'required|mimes:txt'
+		]);
+
+		if ($valid->fails())
+		{
+			$error = $valid->errors()->all();
+			return $error;
+		}
+
 		if($request->hasFile('logFile'))
 		{
 			$files = $request->file('logFile');
@@ -102,7 +123,7 @@ class FormController extends Controller {
 			return "true";
 		}
 
-		return "false";
+		return "Error";
 
 	}
 }
